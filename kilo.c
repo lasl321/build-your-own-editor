@@ -52,6 +52,10 @@ void enableRawMode() {
 
   if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) die("tcsetattr"); }
 
+void editorRefreshScreen() {
+  write(STDOUT_FILENO, "\x1b[2J", 4);
+}
+
 int main() {
 	enableRawMode();
 
