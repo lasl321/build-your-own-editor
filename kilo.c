@@ -34,12 +34,12 @@ struct termios orig_termios;
 
 void disableRawMode() {
   if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios) == -1)
-		die("tcsetattr");
+    die("tcsetattr");
 }
 
 void enableRawMode() {
   if(tcgetattr(STDIN_FILENO, &orig_termios) == -1)
-		die("tcgetattr");
+    die("tcgetattr");
 
   atexit(disableRawMode);
   struct termios raw = orig_termios;
@@ -57,9 +57,9 @@ void editorRefreshScreen() {
 }
 
 int main() {
-	enableRawMode();
+  enableRawMode();
 
-	while (1) {
+  while (1) {
     editorProcessKeypress();
   }
 }
