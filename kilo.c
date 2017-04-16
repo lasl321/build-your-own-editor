@@ -5,40 +5,48 @@
 #include <termios.h>
 #include <unistd.h>
 
-#define CTRL_KEY(k) ((k) & 0x1f)
+#define CTRL_KEY(k) ((k)&0x1f)
 
-void die(const char *s) {
+void die(const char *s)
+{
   perror(s);
   exit(1);
 }
 
-char editorReadKey() {
+char editorReadKey()
+{
   int nread;
   char c;
-  while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
-    if (nread == -1 && errno != EAGAIN) die("read");
+  while ((nread = read(STDIN_FILENO, &c, 1)) != 1)
+  {
+    if (nread == -1 && errno != EAGAIN)
+      die("read");
   }
   return c;
 }
 
-void editorProcessKeypress() {
+void editorProcessKeypress()
+{
   char c = editorReadKey();
-  switch (c) {
-    case CTRL_KEY('q'):
-      exit(0);
-      break;
+  switch (c)
+  {
+  case CTRL_KEY('q'):
+    exit(0);
+    break;
   }
 }
 
 struct termios orig_termios;
 
-void disableRawMode() {
-  if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios) == -1)
+void disableRawMode()
+{
+  if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios) == -1)
     die("tcsetattr");
 }
 
-void enableRawMode() {
-  if(tcgetattr(STDIN_FILENO, &orig_termios) == -1)
+void enableRawMode()
+{
+  if (tcgetattr(STDIN_FILENO, &orig_termios) == -1)
     die("tcgetattr");
 
   atexit(disableRawMode);
@@ -50,17 +58,21 @@ void enableRawMode() {
   raw.c_cc[VMIN] = 0;
   raw.c_cc[VTIME] = 1;
 
-  if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) die("tcsetattr"); }
+  if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1)
+    die("tcsetattr");
+}
 
-void editorRefreshScreen() {
+void editorRefreshScreen()
+{
   write(STDOUT_FILENO, "\x1b[2J", 4);
 }
 
-int main() {
+int main()
+{
   enableRawMode();
 
-  while (1) {
+  while (1)
+  {
     editorProcessKeypress();
   }
 }
-
