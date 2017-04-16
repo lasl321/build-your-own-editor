@@ -20,7 +20,7 @@ void disableRawMode() {
 }
 
 void enableRawMode() {
-  if(tcgetattr(STDIN_FILENO, &orig_termios) == -1) 
+  if(tcgetattr(STDIN_FILENO, &orig_termios) == -1)
 		die("tcgetattr");
 
   atexit(disableRawMode);
@@ -45,7 +45,7 @@ int main() {
     } else {
       printf("%d ('%c')\r\n", c, c);
     }
-    if (c == 'q') break;
+    if (c == CTRL_KEY('q')) break;l
   }
 }
 
