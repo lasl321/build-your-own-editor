@@ -5,6 +5,8 @@
 #include <termios.h>
 #include <unistd.h>
 
+#define CTRL_KEY(k) ((k) & 0x1f)
+
 void die(const char *s) {
   perror(s);
   exit(1);
