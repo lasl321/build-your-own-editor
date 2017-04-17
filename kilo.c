@@ -17,6 +17,13 @@
 
 /*** data ***/
 
+enum editorKey {
+  ARROW_LEFT = 'a',
+  ARROW_RIGHT = 'd',
+  ARROW_UP = 'w',
+  ARROW_DOWN = 's'
+};
+
 struct editorConfig {
   int cx;
   int cy;
